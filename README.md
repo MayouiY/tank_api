@@ -16,10 +16,10 @@
 ## Control类
 该类分为两个大部分，即`Move`和`Shot`
 
-### Move（移动）
+### move（移动）
 函数原型
 ```python
-def Move(self, player_id, direction):
+def move(self, player_id, direction):
 	return True # 成功
 	return False #失败 
 ```
@@ -30,13 +30,13 @@ def Move(self, player_id, direction):
 
 调用示例
 ```python
-Control.Move(1,"left") #id为1的坦克向左移动一格。
+Control.move(1,"left") #id为1的坦克向左移动一格。
 ```
 
-### Fire（射击）
+### fire（射击）
 函数原型
 ```python
-def Fire(self, player_id, direction, type = 0):
+def fire(self, player_id, direction, type = 0):
 	pass
 ```
 - `player_id` : 需要移动的坦克的id，需要是int类型。
@@ -44,8 +44,8 @@ def Fire(self, player_id, direction, type = 0):
 - `type`: 默认是0，代表是普通子弹，一般不需要传。可以专门设置为1，代表超级子弹。
 
 ```
-Control.Fire(1,'up') #向上发射一发普通子弹
-Control.Fire(1,'up',type = 1) # 向上发射一发超级子弹
+Control.fire(1,'up') #向上发射一发普通子弹
+Control.fire(1,'up',type = 1) # 向上发射一发超级子弹
 ```
 
 ## Map
