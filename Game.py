@@ -219,7 +219,7 @@ class Game(object):
             self.string_map_info[river["x"]][river["y"]] = "@"
 
         for coin in msg_data["coin"]:
-            self.string_map_info[coin["x"]][coin["y"]] = coin["point"]
+            self.string_map_info[coin["x"]][coin["y"]] = str(coin["point"])
        
         for star in msg_data["stars"]:
             self.string_map_info[star["x"]][star["y"]] = "*"
