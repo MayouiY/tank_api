@@ -178,4 +178,4 @@ for coordinate, direction in Game.find_all_road_nearby((1,2)).iteritems():
 得到我方所有坦克的信息,list形式，每个元素都是一个字典
 ```
 {"id":0,"team":1001,"x":0,"y":1, "super_bullet":0}
-```nate还是二元组的形式，这个会排除掉已经标为危险区域的点
+```
