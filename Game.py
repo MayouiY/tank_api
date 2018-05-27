@@ -179,6 +179,14 @@ class Game(object):
     def find_all_bullets(self):
         return self.enemy_bullet_list
 
+    def find_all_super_bullets(self):
+        super_bullets_list = []
+        for bullet in self.enemy_bullet_list:
+            if bullet["type"] == 1:
+                super_bullets_list.append(bullet)
+        return super_bullets_list
+
+
     def round_clear(self):
         self.data = None
 
