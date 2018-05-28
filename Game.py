@@ -205,10 +205,10 @@ class Game(object):
 
     def find_all_road_nearby(self, coordinate):
         rounds = [((coordinate[0]+1, coordinate[1]), "right"), ((coordinate[0]-1, coordinate[1]), "left"),
-                 ((coordinate[0], coordinate[1]+1), "up"), ((coordinate[0], coordinate[1] - 1), "down")]
+                  ([coordinate[0], coordinate[1] + 1], "up"), ((coordinate[0], coordinate[1] - 1), "down")]
         round_could = []
         for point in rounds:
-            if self.maps[point[0]][point[1]].get_terrain() is 0 and self.maps[point[0]][point[1]].death_trap is False:
+            if self.maps[point[0]][point[1]].get_terrain() == 0 and self.maps[point[0]][point[1]].death_trap is False and self.maps[point[0]][point[1]].get_tank_id()[0] is False:
                 round_could.append(point)
         return round_could
 
@@ -228,10 +228,10 @@ class Game(object):
 
         for coin in msg_data["coin"]:
             self.string_map_info[coin["x"]][coin["y"]] = str(coin["point"])
-       
+
         for star in msg_data["stars"]:
             self.string_map_info[star["x"]][star["y"]] = "*"
-        
+
 
 
 

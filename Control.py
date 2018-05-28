@@ -27,7 +27,7 @@ class Control(object):
                 break
         return True
 
-    def fire(self, player_id, direction, bullet_type):
+    def fire(self, player_id, direction, bullet_type=0):
         for action in self.actions:
             if action["player_id"] == player_id:
                 action["fire"] = [direction]
