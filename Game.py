@@ -5,6 +5,7 @@ import sys
 import socket
 import json
 import time
+import log_zx
 MAX_RECV_BYTES = 1024*10
 MSG_NAME_REGISTRATION = "registration"
 MSG_NAME_LEG_START = "leg_start"
@@ -41,8 +42,10 @@ def registration(sock, team_id):
     send(sock, reg_data)
 
 
-
-
+all_tanks = []
+log = log_zx.log
+for i in range(0,16):
+    all_tanks.append(Tank())
 
 
 class Game(object):
@@ -128,7 +131,7 @@ class Game(object):
                     self.maps[bullet["x"]][bullet["y"]].add_enemy_bullets(bullet["direction"], bullet["type"])
                     self.enemy_bullet_list.append(bullet)
                     direction = bullet["direction"]
-                    for i in range(1, 2):
+                    for i in range(1, 3):
                         try:
                             if direction is "up":
                                 self.maps[bullet["x"]][bullet["y"] + i].death_trap = True
@@ -170,7 +173,7 @@ class Game(object):
     def find_all_our_tank(self):  # 得到我方所有坦克的信息（字典形式{"id":0,"team":1001,"x":0,"y":1, "super_bullet":0}）
         return self.our_tank
 
-    def find_all_star(self):
+    def find_all_stars(self):
         return self.star_list
 
     def find_all_coins(self):
@@ -185,7 +188,6 @@ class Game(object):
             if bullet["type"] == 1:
                 super_bullets_list.append(bullet)
         return super_bullets_list
-
 
     def round_clear(self):
         self.data = None
@@ -208,12 +210,15 @@ class Game(object):
                   ([coordinate[0], coordinate[1] + 1], "up"), ((coordinate[0], coordinate[1] - 1), "down")]
         round_could = []
         for point in rounds:
-            if self.maps[point[0]][point[1]].get_terrain() == 0 and self.maps[point[0]][point[1]].death_trap is False and self.maps[point[0]][point[1]].get_tank_id()[0] is False:
-                round_could.append(point)
+            try:
+                if self.maps[point[0]][point[1]].get_terrain() == 0 and self.maps[point[0]][point[1]].death_trap is False and self.maps[point[0]][point[1]].get_tank_id()[0] is False:
+                    round_could.append(point)
+            except IndexError:
+                break
         return round_could
 
     def set_string_map(self):
-        self.string_map_info = [["+" for y in range(self.map_height)] for x in range(self.map_width)]
+        self.string_map_info = [["+" for y in range(self.map_height)] for x in range(self.map_width)]  # TODO
 
     def make_string_map(self):
         msg_data = self.data["msg_data"]
@@ -232,9 +237,49 @@ class Game(object):
         for star in msg_data["stars"]:
             self.string_map_info[star["x"]][star["y"]] = "*"
 
+        for tank in msg_data["players"]:
+            self.string_map_info[tank["x"]][tank["y"]] = "T"
 
+    def find_blocks_with_x(self, x1, x2, y):
+        blocks = {}
+        if x1 > x2:
+            x1, x2 = x2, x1
+        for x in range(x1, x2):
+            if 0 < self.maps[x][y].get_terrain() < 3:
+                blocks["x"] = self.maps[x][y].get_terrain()
+        return blocks
 
+    def find_blocks_with_y(self, y1, y2, x):
+        blocks = {}
+        if y1 > y2:
+            y1, y2 = y2, y1
+        for y in range(y1, y2):
+            if 0 < self.maps[x][y].get_terrain() < 3:
+                blocks["y"] = self.maps[x][y].get_terrain()
+        return blocks
 
+    def get_string_map(self):
+        self.set_string_map()
+        self.make_string_map()
+        return self.string_map_info
+
+    def get_all_our_tank_zx(self):
+        # log.log("start_zx")
+        msg_data = self.data["msg_data"]
+        tanks = []
+        for i in all_tanks:
+            i.active = False
+        for tank_msg in msg_data["players"]:
+            if tank_msg["team"] == self.team_id: #我方tank
+                all_tanks[tank_msg["id"]].tank_id =tank_msg["id"]
+                all_tanks[tank_msg["id"]].active = True
+                all_tanks[tank_msg["id"]].change_coordinate(( tank_msg["y"],tank_msg["x"]))
+                # new_tank = Tank((tank_msg["x"], tank_msg["y"]), tank_msg["id"])
+                if tank_msg["super_bullet"] == 1:
+                    all_tanks[tank_msg["id"]].set_super_bullet()
+                tanks.append(all_tanks[tank_msg["id"]])
+
+        return tanks
 
 
 

@@ -1,25 +1,22 @@
-from Game import *
-
-
 class Strategy(object):
 
     def __init__(self, game):
         self.game = game
 
-    def find_bullets_up(self, coordinate):
+    def find_bullets_down(self, coordinate):
         bullets = []
         for bullet in self.game.find_all_bullets():
-            if bullet["x"] == coordinate[0] and bullet["y"] > coordinate[1] and bullet["direction"] is "down":
+            if bullet["x"] == coordinate[0] and bullet["y"] > coordinate[1] and bullet["direction"] is "up":
                 cp_bullet = bullet.copy()
                 cp_bullet["distance"] = bullet["y"] - coordinate[1]
                 bullets.append(cp_bullet)
 
         return bullets
 
-    def find_bullets_down(self, coordinate):
+    def find_bullets_up(self, coordinate):
         bullets = []
         for bullet in self.game.find_all_bullets():
-            if bullet["x"] == coordinate[0] and bullet["y"] < coordinate[1] and bullet["direction"] is "up":
+            if bullet["x"] == coordinate[0] and bullet["y"] < coordinate[1] and bullet["direction"] is "down":
                 cp_bullet = bullet.copy()
                 cp_bullet["distance"] = coordinate[1] - bullet["y"]
                 bullets.append(cp_bullet)
@@ -67,3 +64,5 @@ class Strategy(object):
         all_bullet_danger["up"] = self.find_bullets_up(coordinate)
         all_bullet_danger["down"] = self.find_bullets_down(coordinate)
         return all_bullet_danger
+
+

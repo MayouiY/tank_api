@@ -179,3 +179,9 @@ for coordinate, direction in Game.find_all_road_nearby((1,2)).iteritems():
 ```
 {"id":0,"team":1001,"x":0,"y":1, "super_bullet":0}
 ```
+
+## Strategy类
+这个类是一个纯粹的方法类，每回合开始在Game类之后实例化
+
+### 方法列表
+####

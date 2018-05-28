@@ -1,6 +1,7 @@
 
 from Control import *
-
+import AI_zx,new_start
+from Strategy import *
 
 def start_round(sock, team_id):
     game = Game(sock, team_id)
@@ -13,10 +14,16 @@ def start_round(sock, team_id):
         if msg_name == "round":
             game.round_start()
             control = Control(team_id, game.our_tank_id, game.maps, game.data)
+            strategy = Strategy(game)
             # 操作函数
-            for tank_id in game.our_tank_id:
-                control.move(tank_id, "up")
-                control.fire(tank_id, "up", 0)
+            game.set_tank_msg()
+            try:
+              #  AI_zx.start_zx(game,control)
+                new_start.start_5_28(game, control, strategy)
+            except Exception as e:
+                log.log("start:")
+                log.log(e)
+
             control.send_msg(sock)
             game.round_clear()
         elif msg_name == "leg_start":
