@@ -7,19 +7,22 @@ class Strategy(object):
         bullets = []
         for bullet in self.game.find_all_bullets():
             if bullet["x"] == coordinate[0] and bullet["y"] > coordinate[1] and bullet["direction"] is "up":
-                cp_bullet = bullet.copy()
-                cp_bullet["distance"] = bullet["y"] - coordinate[1]
-                bullets.append(cp_bullet)
+                if self.game.find_blocks_with_y(coordinate[1], bullet["y"], coordinate[0]) is {}:
+                    cp_bullet = bullet.copy()
+                    cp_bullet["distance"] = bullet["y"] - coordinate[1]
+                    bullets.append(cp_bullet)
 
         return bullets
 
     def find_bullets_up(self, coordinate):
         bullets = []
         for bullet in self.game.find_all_bullets():
+
             if bullet["x"] == coordinate[0] and bullet["y"] < coordinate[1] and bullet["direction"] is "down":
-                cp_bullet = bullet.copy()
-                cp_bullet["distance"] = coordinate[1] - bullet["y"]
-                bullets.append(cp_bullet)
+                if self.game.find_blocks_with_y(coordinate[1], bullet["y"], coordinate[0]) is {}:
+                    cp_bullet = bullet.copy()
+                    cp_bullet["distance"] = coordinate[1] - bullet["y"]
+                    bullets.append(cp_bullet)
 
         return bullets
 
@@ -27,9 +30,10 @@ class Strategy(object):
         bullets = []
         for bullet in self.game.find_all_bullets():
             if bullet["y"] == coordinate[1] and bullet["x"] < coordinate[0] and bullet["direction"] is "right":
-                cp_bullet = bullet.copy()
-                cp_bullet["distance"] = coordinate[1] - bullet["y"]
-                bullets.append(cp_bullet)
+                if self.game.find_blocks_with_x(coordinate[0], bullet["x"], coordinate[1]) is {}:
+                    cp_bullet = bullet.copy()
+                    cp_bullet["distance"] = coordinate[1] - bullet["y"]
+                    bullets.append(cp_bullet)
 
         return bullets
 
@@ -37,9 +41,10 @@ class Strategy(object):
         bullets = []
         for bullet in self.game.find_all_bullets():
             if bullet["y"] == coordinate[1] and bullet["x"] > coordinate[0] and bullet["direction"] is "left":
-                cp_bullet = bullet.copy()
-                cp_bullet["distance"] = bullet["y"] - coordinate[1]
-                bullets.append(cp_bullet)
+                if self.game.find_blocks_with_x(coordinate[0], bullet["x"], coordinate[1]) is {}:
+                    cp_bullet = bullet.copy()
+                    cp_bullet["distance"] = bullet["y"] - coordinate[1]
+                    bullets.append(cp_bullet)
 
         return bullets
 

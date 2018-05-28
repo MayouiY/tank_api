@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import math,log_zx
+import math
 
 # 因为python里string不能直接改变某一元素，所以用test_map来存储搜索时的地图
 test_map = []
@@ -16,7 +16,7 @@ class Node_Elem:
         self.dist = dist
 
 
-class A_Star(object):
+class A_Star:
     """
     A星算法实现类
     """
@@ -150,30 +150,50 @@ class A_Star(object):
 
 #########################################################
 
-def find_path(tank_list, map_list, s_x, s_y, e_x, e_y):
+def find_path(string_map, tank_obj):
     global test_map
-    test_map = map_list
-    for tank in tank_list:
-        test_map[tank[1]][tank[0]] = 'T'
+    test_map = string_map
+    # for tank in tank_list:
+    #     test_map[tank[1]][tank[0]] = 'T'
+    s_x,s_y = tank_obj.coordinate
+    e_x,e_y = tank_obj.where_to_go
     a_star = A_Star(s_x, s_y, e_x, e_y)
     a_star.find_path()
     path = a_star.path
     # path倒叙
     path.reverse()
     return path
-log = log_zx.log
 
-def find_fangxiang(tank,game,want_to_go,str):
-    path = find_path([[0,0]], str, tank.coordinate[1], tank.coordinate[0], want_to_go[1], want_to_go[0])
-    hang = path[1][1]
-    lie = path[1][0]
-    if hang == tank.coordinate[0]:
-        if lie > tank.coordinate[1]:
-            return ("right",path[1])
+
+# def return_direction_string(start,end):
+#     if start[0] == end[0]:
+#         if start[1] < end [1]:
+#             return "down"
+#         else:
+#             return  "up"
+#     else:
+#         if start[0] < end[0]:
+#             return "right"
+#         else:
+#             return "left"
+
+
+
+
+def find_fangxiang(game_obj,tank_obj):
+    string_map = game_obj.get_string_map()
+    all_road_nearby = game_obj.find_all_road_nearby(tank_obj.coordinate)
+    path = find_path(string_map, tank_obj)
+    if path:  # path不为空时
+        if all_road_nearby:  # 安全list不为空
+            for safe_nearby in all_road_nearby:
+                if path[1][0] == safe_nearby[0][0] and path[1][1] == safe_nearby[0][1]:
+                    return safe_nearby[1]  # 计算出的下一步坐标在安全坐标list内
+            return all_road_nearby[0][1]  # 目标方向不在安全list里，在安全list里取第一个坐标走
         else:
-            return ("left",path[1])
-    elif hang > tank.coordinate[0]:
-        return ("down",path[1])
+            return None  # 周边都危险，返回空
     else:
-        return ("up",path[1])
-
+        if all_road_nearby:  # 安全list不为空
+            return all_road_nearby[0][1]  # 目标方向不安全，在安全list里取第一个坐标走
+        else:
+            return None  # 没路走并且还周边都危险，返回空

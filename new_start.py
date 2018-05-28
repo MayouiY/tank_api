@@ -1,15 +1,15 @@
 import log_zx
-
+from fire_ai import *
 # y
 
 def find_to_go(game):
     stars = game.find_all_stars()
     if stars != []:
-        return (stars[0]["x"],stars[0]["y"])
+        return stars[0]["x"], stars[0]["y"]
 
     coins = game.find_all_coins()
     if coins != [] :
-        return (coins[0]["x"],coins[0]["y"])
+        return coins[0]["x"], coins[0]["y"]
 
     enemys = game.find_all_enemy()
     if enemys != []:
@@ -25,5 +25,6 @@ log = log_zx.log
 
 def start_5_28(game, control, strategy):
     log.log(find_to_go(game))
+    fire_ai(game, control, strategy)
 
 
