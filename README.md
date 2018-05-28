@@ -1,7 +1,7 @@
 # tank_api
 软通的坦克操作api
 ### 使用说明
-这套东西的使用是，将自己的操作函数放在Start.py带有注释“操作函数”的位置来调用
+这套东西的使用是，将自己的操作函数在`new_start.py` 中引用，然后在`start_5_28()`函数下调用自己的操作函数（记得带上`game, control, strategy`参数）
 之前会帮助实例化Game为game，这个game的maps属性就是一个由Map类数据组成的二维数组，用坐标来寻找
 会帮助实例化Control类为control。
 可以把这两个当作参数传入函数
@@ -9,7 +9,7 @@
 每回合开始时由于某些问题，需要自己进行tank信息的更新/设置（见Game的`set_tank_msg()`部分）
 使用字符型地图也需要自行进行初始化和更新（见Game的`set_string_map()  & make_string_map()`部分）
 
-
+`findway.py`中有`findway.find_fangxiang(game_obj,tank_obj)`来指引下一回合的移动（待补充）
 
 
 
@@ -184,4 +184,20 @@ for coordinate, direction in Game.find_all_road_nearby((1,2)).iteritems():
 这个类是一个纯粹的方法类，每回合开始在Game类之后实例化
 
 ### 方法列表
-####
+#### find_all_bullets_dangers(coordinate)
+返回某个坐标上下左右所有有威胁的子弹，返回格式是嵌套的字典
+```
+{
+	"up" : [{"type":1,"team":1001,"x":0,"y":0, "direction":"down","distance":3}, {"type":1,"team":1001,"x":0,"y":0, "direction":"down","distance":4}]
+	"down" : []
+	# and so on
+}
+```
+
+#### find_bullets_dangers(tank, direction)
+返回某个坦克某方向有威胁的子弹
+返回值是字典为元素的List
+```
+[{"type":1,"team":1001,"x":0,"y":0, "direction":"down","distance":3}, {"type":1,"team":1001,"x":0,"y":0, "direction":"down","distance":4}]
+```
+
