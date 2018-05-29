@@ -133,13 +133,13 @@ class Game(object):
                     direction = bullet["direction"]
                     for i in range(1, 3):
                         try:
-                            if direction is "up" and self.find_blocks_with_y(bullet["y"], bullet["y"] + i) is {}:
+                            if direction is "up" and self.find_blocks_with_y(bullet["y"], bullet["y"] + i, bullet["x"]) == {}:
                                 self.maps[bullet["x"]][bullet["y"] + i].death_trap = True
-                            elif direction is "down" and self.find_blocks_with_y(bullet["y"], bullet["y"] - i) is {}:
+                            elif direction is "down" and self.find_blocks_with_y(bullet["y"], bullet["y"] - i, bullet["x"]) == {}:
                                 self.maps[bullet["x"]][bullet["y"] - i].death_trap = True
-                            elif direction is "left" and self.find_blocks_with_x(bullet["x"], bullet["x"] - i) is {}:
+                            elif direction is "left" and self.find_blocks_with_x(bullet["x"], bullet["x"] - i, bullet["y"]) == {}:
                                 self.maps[bullet["x"] - i][bullet["y"]].death_trap = True
-                            elif direction is "right" and self.find_blocks_with_x(bullet["x"], bullet["x"] + i) is {}:
+                            elif direction is "right" and self.find_blocks_with_x(bullet["x"], bullet["x"] + i, bullet["y"]) == {}:
                                 self.maps[bullet["x"] + i][bullet["y"]].death_trap = True
                         except IndexError:
                             break

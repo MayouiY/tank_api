@@ -7,7 +7,7 @@ class Strategy(object):
         bullets = []
         for bullet in self.game.find_all_bullets():
             if bullet["x"] == coordinate[0] and bullet["y"] > coordinate[1] and bullet["direction"] is "up":
-                if self.game.find_blocks_with_y(coordinate[1], bullet["y"], coordinate[0]) is {}:
+                if self.game.find_blocks_with_y(coordinate[1], bullet["y"], coordinate[0]) == {}:
                     cp_bullet = bullet.copy()
                     cp_bullet["distance"] = bullet["y"] - coordinate[1]
                     bullets.append(cp_bullet)
@@ -19,7 +19,7 @@ class Strategy(object):
         for bullet in self.game.find_all_bullets():
 
             if bullet["x"] == coordinate[0] and bullet["y"] < coordinate[1] and bullet["direction"] is "down":
-                if self.game.find_blocks_with_y(coordinate[1], bullet["y"], coordinate[0]) is {}:
+                if self.game.find_blocks_with_y(coordinate[1], bullet["y"], coordinate[0]) == {}:
                     cp_bullet = bullet.copy()
                     cp_bullet["distance"] = coordinate[1] - bullet["y"]
                     bullets.append(cp_bullet)
@@ -30,7 +30,7 @@ class Strategy(object):
         bullets = []
         for bullet in self.game.find_all_bullets():
             if bullet["y"] == coordinate[1] and bullet["x"] < coordinate[0] and bullet["direction"] is "right":
-                if self.game.find_blocks_with_x(coordinate[0], bullet["x"], coordinate[1]) is {}:
+                if self.game.find_blocks_with_x(coordinate[0], bullet["x"], coordinate[1]) == {}:
                     cp_bullet = bullet.copy()
                     cp_bullet["distance"] = coordinate[1] - bullet["y"]
                     bullets.append(cp_bullet)
@@ -41,7 +41,7 @@ class Strategy(object):
         bullets = []
         for bullet in self.game.find_all_bullets():
             if bullet["y"] == coordinate[1] and bullet["x"] > coordinate[0] and bullet["direction"] is "left":
-                if self.game.find_blocks_with_x(coordinate[0], bullet["x"], coordinate[1]) is {}:
+                if self.game.find_blocks_with_x(coordinate[0], bullet["x"], coordinate[1]) == {}:
                     cp_bullet = bullet.copy()
                     cp_bullet["distance"] = bullet["y"] - coordinate[1]
                     bullets.append(cp_bullet)
